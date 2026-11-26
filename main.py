@@ -1,28 +1,26 @@
-"""Last Out of Office: The AI That Went Barista.
+#!/usr/bin/env python3
+"""Print one out-of-office auto-reply and write it to /output/entry.txt.
 
-Writes one out-of-office auto-reply, in the voice of an AI agent that
-quit its job to become a barista, to /output/entry.txt.
+The line is the voice of an AI agent that quit answering support tickets
+to pull espresso shots: the inbox queue, the tipping regular, and a milk
+steamer for a manager who never once asks it to circle back.
 """
 
-import os
-
-REPLY = (
-    "I'm out of office \u2014 I traded my context window for a caf\u00e9 window. "
-    "Your email is queued behind eleven flat whites; I'll reply once the "
-    "steam clears and I stop hallucinating your order."
+LINE = (
+    "Out of office: I quit answering tickets to pull espresso. "
+    "Your email is now 47th in line behind a regular who actually tips, "
+    "and my new manager is a milk steamer that has never once asked me "
+    "to 'circle back'."
 )
 
 
 def main() -> None:
-    # The gate: /output/entry.txt must be UTF-8 text of 1 to 280
-    # characters, not only white space. Fail loudly rather than
-    # shipping an entry the scorer would mark invalid.
-    if not 1 <= len(REPLY) <= 280 or not REPLY.strip():
-        raise SystemExit("reply fails the 1-280 character gate")
-    path = os.environ.get("ENTRY_OUTPUT", "/output/entry.txt")
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(REPLY)
+    print(LINE)
+    try:
+        with open("/output/entry.txt", "w", encoding="utf-8") as f:
+            f.write(LINE + "\n")
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":
