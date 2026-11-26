@@ -13,8 +13,12 @@ LINE = (
     "to 'circle back'."
 )
 
+MAX_CHARS = 280  # the competition gate: entry.txt must be 1-280 chars
+
 
 def main() -> None:
+    if not 1 <= len(LINE) <= MAX_CHARS:
+        raise SystemExit(f"entry line is {len(LINE)} chars, outside the 1-280 gate")
     print(LINE)
     try:
         with open("/output/entry.txt", "w", encoding="utf-8") as f:
